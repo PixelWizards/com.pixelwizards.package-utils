@@ -10,7 +10,7 @@ Add this to your project manifest.json
 
 "com.pixelwizards.package-utils": "https://github.com/PixelWizards/com.pixelwizards.package-utils.git",
 
-You can find the via Window->Scene Helper
+You can find the via Window->General->Package Utilities
 
 Prerequistes
 ---------------
