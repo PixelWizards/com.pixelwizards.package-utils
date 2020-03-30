@@ -6,6 +6,9 @@ using Loc = PixelWizards.PackageUtil.PackageUtilLoc;                            
 
 namespace PixelWizards.PackageUtil
 {
+    /// <summary>
+    /// Localization text for the View
+    /// </summary>
     public static class PackageUtilLoc
     {
         public const string MENUITEMPATH = "Window/General/Package Utilities";
@@ -31,6 +34,9 @@ namespace PixelWizards.PackageUtil
         public const string EXPORT_PACKAGE = "Export Package";
     }
 
+    /// <summary>
+    /// The View model for the system
+    /// </summary>
     public class PackageUtilEditor : EditorWindow
     {
         public static Vector2 curWindowSize = Vector2.zero;
@@ -47,7 +53,7 @@ namespace PixelWizards.PackageUtil
             thisWindow.Reset();
         }
 
-        public void OnEnable()
+        private void OnEnable()
         {
             Reset();
         }
@@ -196,8 +202,8 @@ namespace PixelWizards.PackageUtil
 
                     GUILayout.BeginVertical();
                     {
-                        RenderPathBrowserField(Loc.PACKAGE_SOURCE_PATH, ref Control.Model.packageSourcePath, "Assets");
-                        RenderPathBrowserField(Loc.PACKAGE_DESTINATION_PATH, ref Control.Model.packageDestinationPath, "");
+                        RenderPathBrowserField(Loc.PACKAGE_SOURCE_PATH, ref Control.packageSourcePath, "Assets");
+                        RenderPathBrowserField(Loc.PACKAGE_DESTINATION_PATH, ref Control.packageDestinationPath, "");
                     }
                     GUILayout.EndVertical();
 
@@ -213,6 +219,10 @@ namespace PixelWizards.PackageUtil
             }
             GUILayout.EndScrollView();
         }
+
+        /// <summary>
+        /// Helper UI methods
+        /// </summary>
 
         private void RenderTextField( string loc, ref string field)
         {
