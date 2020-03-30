@@ -1,4 +1,4 @@
-com.pixelwizards.packageutil
+com.pixelwizards.package-utils
 =========================
 
 [![openupm](https://img.shields.io/npm/v/com.pixelwizards.package-utils?label=openupm&registry_uri=https://package.openupm.com)](https://openupm.com/packages/com.pixelwizards.package-utils/)
