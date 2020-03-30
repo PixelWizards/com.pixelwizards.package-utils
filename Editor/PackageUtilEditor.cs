@@ -85,10 +85,10 @@ namespace PixelWizards.PackageUtil
                         GUILayout.Space(5f);
                         GUILayout.BeginVertical();
                         {
-                            RenderTextField(Loc.PACKAGE_NAME, ref Control.Model.packageName);
+                            RenderTextField(Loc.PACKAGE_NAME, ref Control.Model.name);
                             RenderTextField(Loc.DISPLAY_NAME, ref Control.Model.displayName);
-                            RenderTextField(Loc.PACKAGE_VERSION, ref Control.Model.packageVersion);
-                            RenderTextField(Loc.UNITY_VERSION, ref Control.Model.unityVersion);
+                            RenderTextField(Loc.PACKAGE_VERSION, ref Control.Model.version);
+                            RenderTextField(Loc.UNITY_VERSION, ref Control.Model.unity);
                             RenderTextField(Loc.PACKAGE_DESCRIPTION, ref Control.Model.description);
                             RenderTextField(Loc.PACKAGE_CATEGORY, ref Control.Model.category);
                         }

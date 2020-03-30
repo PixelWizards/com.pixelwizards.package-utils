@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using Loc = PixelWizards.PackageUtil.PackageUtilLoc;                                 // string localization table
@@ -19,10 +20,10 @@ namespace PixelWizards.PackageUtil
     /// </summary>
     public class PackageUtilModel
     {
-        public string packageName;
+        public string name = "com.mycompany.mypackage";
         public string displayName;
-        public string packageVersion;
-        public string unityVersion;
+        public string version = "0.1.0-preview.1";
+        public string unity = "2018.4";
         public string description;
         public string category;
         public List<string> keywords = new List<string>();
@@ -58,7 +59,8 @@ namespace PixelWizards.PackageUtil
         /// </summary>
         public static void ExportPackage()
         {
-
+            var manifest = JsonConvert.SerializeObject(Model, Formatting.Indented);
+            Debug.Log(manifest);
         }
 
         /// <summary>

@@ -9,5 +9,8 @@
     "email": "support@pixelwizards.ca",
     "url": "https://github.com/PixelWizards"
   },
-  "keywords": []
+  "keywords": [],
+  "dependencies": {
+    "com.unity.nuget.newtonsoft-json": "1.1.2"
+  }
 }
