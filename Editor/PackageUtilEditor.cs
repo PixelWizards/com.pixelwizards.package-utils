@@ -14,7 +14,7 @@ namespace PixelWizards.PackageUtil
         public const string MENUITEMPATH = "Window/General/Package Utilities";
         public const string WINDOWTITLE = "Package Utilities Editor";
         
-        public const string WINDOW_HEADER = "Utilities to help creation of custom packages";
+        public const string WINDOW_HEADER = "Utility to help creation of custom packages";
         public const string HELP_HEADER = "Create and manage custom packages.";
         public const string BASIC_INFO = "Basic Info";
         public const string PACKAGE_PATHS = "Package Paths";
@@ -70,9 +70,6 @@ namespace PixelWizards.PackageUtil
 
             scrollPosition = GUILayout.BeginScrollView(scrollPosition);
             {
-
-
-                GUILayout.Space(10f);
                 GUILayout.BeginVertical();
                 {
                     GUILayout.Space(10f);
@@ -98,6 +95,8 @@ namespace PixelWizards.PackageUtil
                         GUILayout.EndVertical();
                     }
                     GUILayout.EndHorizontal();
+
+                    GUILayout.Space(10f);
 
                     GUILayout.Label(Loc.KEYWORDS, EditorStyles.boldLabel);
                     GUILayout.BeginVertical();
