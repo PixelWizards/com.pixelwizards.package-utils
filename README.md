@@ -16,12 +16,17 @@ Prerequistes
 ---------------
 * This has been tested for `>= 2018.3`
 
+Known Issues
+---------------
+- json serialization for Dependencies isn't correct currently. (Have to figure out how to make
+a custom newtonsoft serializer for the PackageDependency type)
+
 Content
 ----------------
 
 ### Tools
 
-* Window/General/Package Manager Utilities
+* Window/General/Package Utilities
 
 ### Samples
 
