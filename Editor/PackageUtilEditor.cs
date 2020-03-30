@@ -160,8 +160,8 @@ namespace PixelWizards.PackageUtil
                                             GUILayout.Space(10f);
                                             GUILayout.BeginVertical(GUI.skin.box);
                                             {
-                                                RenderTextField(Loc.PACKAGE_NAME, ref dependency.packageName);
-                                                RenderTextField(Loc.PACKAGE_VERSION, ref dependency.packageVersion);
+                                                RenderTextField(Loc.PACKAGE_NAME, ref dependency.name);
+                                                RenderTextField(Loc.PACKAGE_VERSION, ref dependency.version);
                                             }
                                             GUILayout.EndVertical();
                                         }

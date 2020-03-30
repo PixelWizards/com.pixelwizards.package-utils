@@ -8,11 +8,20 @@ namespace PixelWizards.PackageUtil
 {
     /// <summary>
     /// A single entry of our package dependencies
+    /// 
+    /// FIXME: need to add a custom serializer for dependencies for Newtonsoft
     /// </summary>
     public class PackageDependency
     {
-        public string packageName;
-        public string packageVersion;
+        public string name;
+        public string version;
+    }
+
+    public class Author
+    {
+        public string name = "Pixel Wizards";
+        public string email = "support@pixelwizards.ca";
+        public string url = "www.pixelwizards.ca";
     }
 
     /// <summary>
@@ -26,6 +35,7 @@ namespace PixelWizards.PackageUtil
         public string unity = "2018.4";
         public string description;
         public string category;
+        public Author author = new Author();
         public List<string> keywords = new List<string>();
         public List<PackageDependency> dependencies = new List<PackageDependency>();
     }
