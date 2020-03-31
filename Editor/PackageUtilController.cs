@@ -50,7 +50,6 @@ namespace PixelWizards.PackageUtil
     /// </summary>
     public static class PackageUtilController
     {
-        public static bool initialized = false;
         private static PackageUtilModel model = new PackageUtilModel();
         public static PackageUtilModel Model { get => model; set => model = value; }
         public static string packageSourcePath;
@@ -63,12 +62,10 @@ namespace PixelWizards.PackageUtil
         /// </summary>
         public static void Init()
         {
-            if (initialized)
-                return;
-
             model = new PackageUtilModel();
-            
-            initialized = true;
+            packageSourcePath = string.Empty;
+            packageDestinationPath = string.Empty;
+            outputLog.Clear();
         }
 
         /// <summary>

@@ -37,6 +37,7 @@ namespace PixelWizards.PackageUtil
         public const string AUTHOR_URL = "Author URL";
 
         public const string EXPORT_PACKAGE = "Export Package";
+        public const string NEW_PACKAGE = "New Package";
     }
 
     /// <summary>
@@ -304,21 +305,29 @@ namespace PixelWizards.PackageUtil
         /// </summary>
         private void DrawExportButtonUI()
         {
-            if (GUILayout.Button(Loc.EXPORT_PACKAGE, GUILayout.Height(35f)))
+            GUILayout.BeginHorizontal();
             {
-                Control.ExportPackage();
+                if (GUILayout.Button(Loc.NEW_PACKAGE, GUILayout.Height(35f), GUILayout.ExpandWidth(true)))
+                {
+                    Reset();
+                }
+                if (GUILayout.Button(Loc.EXPORT_PACKAGE, GUILayout.Height(35f), GUILayout.ExpandWidth(true)))
+                {
+                    Control.ExportPackage();
+                }
             }
+            GUILayout.EndHorizontal();
 
             // draw a log of the actions that we're taking
             GUILayout.BeginHorizontal();
             {
                 GUILayout.Space(5f);
-                GUILayout.BeginHorizontal(GUI.skin.textArea);
+                GUILayout.BeginHorizontal();
                 {
                     outputScrollPosition = GUILayout.BeginScrollView(outputScrollPosition, GUILayout.ExpandWidth(true), GUILayout.Height(200f));
                     {
                         var debugtext = Control.outputLog.ToString();
-                        GUILayout.TextArea(debugtext, GUILayout.ExpandWidth(true), GUILayout.Width(460f));
+                        GUILayout.TextArea(debugtext, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
                     }
                     GUILayout.EndScrollView();
                 }
