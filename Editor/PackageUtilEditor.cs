@@ -231,11 +231,11 @@ namespace PixelWizards.PackageUtil
                     GUILayout.Space(5f);
                     GUILayout.BeginVertical(GUI.skin.box);
                     {
-                        if (Control.Model.dependencies.Count > 0)
+                        if (Control.Model.dependencies.entries.Count > 0)
                         {
-                            for (var i = 0; i < Control.Model.dependencies.Count; i++)
+                            for (var i = 0; i < Control.Model.dependencies.entries.Count; i++)
                             {
-                                var dependency = Control.Model.dependencies[i];
+                                var dependency = Control.Model.dependencies.entries[i];
                                 GUILayout.BeginHorizontal();
                                 {
                                     GUILayout.Space(10f);
@@ -248,7 +248,7 @@ namespace PixelWizards.PackageUtil
                                 }
                                 GUILayout.EndHorizontal();
 
-                                Control.Model.dependencies[i] = dependency;
+                                Control.Model.dependencies.entries[i] = dependency;
                             }
                         }
                         else
@@ -269,7 +269,7 @@ namespace PixelWizards.PackageUtil
                     }
                     if (GUILayout.Button("-"))
                     {
-                        Control.RemoveDependency(Control.Model.dependencies.Count - 1);
+                        Control.RemoveDependency(Control.Model.dependencies.entries.Count - 1);
                     }
                 }
                 GUILayout.EndHorizontal();

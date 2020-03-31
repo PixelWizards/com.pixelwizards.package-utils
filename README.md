@@ -38,8 +38,7 @@ Prerequistes
 
 Known Issues
 ---------------
-- json serialization for Dependencies isn't correct currently. (Have to figure out how to make
-a custom newtonsoft serializer for the PackageDependency type)
+- None - submit issues on Github!
 
 Content
 ----------------

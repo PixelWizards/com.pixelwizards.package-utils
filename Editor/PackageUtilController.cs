@@ -2,21 +2,26 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using UnityEditor;
 using UnityEngine;
-using Loc = PixelWizards.PackageUtil.PackageUtilLoc;                                 // string localization table
 
 namespace PixelWizards.PackageUtil
 {
     /// <summary>
     /// A single entry of our package dependencies
-    /// 
-    /// FIXME: need to add a custom serializer for dependencies for Newtonsoft
     /// </summary>
     public class PackageDependency
     {
         public string name;
         public string version;
+    }
+
+    /// <summary>
+    /// Wrapper for the dependencies so we can serialize the list properly
+    /// </summary>
+    [JsonConverter(typeof(DependencySerializer))]
+    public class DependencyList
+    {
+        public List<PackageDependency> entries = new List<PackageDependency>();
     }
 
     /// <summary>
@@ -42,7 +47,7 @@ namespace PixelWizards.PackageUtil
         public string category;
         public Author author = new Author();
         public List<string> keywords = new List<string>();
-        public List<PackageDependency> dependencies = new List<PackageDependency>();
+        public DependencyList dependencies = new DependencyList();
     }
 
     /// <summary>
@@ -99,9 +104,10 @@ namespace PixelWizards.PackageUtil
             outputLog.AppendLine("Copying files....");
 
             var outputPath = packageDestinationPath + "/" + Model.name;
+
             if (Directory.Exists(packageDestinationPath))
             {
-                if( !Directory.Exists(outputPath))
+                if (!Directory.Exists(outputPath))
                 {
                     // create the output directory
                     Directory.CreateDirectory(outputPath);
@@ -125,6 +131,12 @@ namespace PixelWizards.PackageUtil
             outputLog.AppendLine("");
             outputLog.AppendLine("Writing Manifest...");
             
+            if( !Directory.Exists(outputPath))
+            {
+                outputLog.AppendLine("Error: output directory doesn't exist?");
+                return;
+            }
+
             using (StreamWriter outputFile = new StreamWriter(Path.Combine(outputPath, "package.json")))
             {
                 outputFile.Write(manifest);
@@ -148,7 +160,6 @@ namespace PixelWizards.PackageUtil
                 success = false;
             }
 
-
             return success;
         }
 
@@ -166,7 +177,13 @@ namespace PixelWizards.PackageUtil
         /// <param name="entry"></param>
         public static void RemoveKeyword(int entry)
         {
-            model.keywords.RemoveAt(entry);
+            if( model.keywords.Count > 0)
+            {
+                if( model.keywords[entry] != null)
+                {
+                    model.keywords.RemoveAt(entry);
+                }
+            }
         }
 
         /// <summary>
@@ -174,7 +191,7 @@ namespace PixelWizards.PackageUtil
         /// </summary>
         public static void AddNewDependency()
         {
-            model.dependencies.Add(new PackageDependency());
+            model.dependencies.entries.Add(new PackageDependency());
         }
 
         /// <summary>
@@ -183,7 +200,13 @@ namespace PixelWizards.PackageUtil
         /// <param name="entry"></param>
         public static void RemoveDependency(int entry)
         {
-            model.dependencies.RemoveAt(entry);
+            if (model.dependencies.entries.Count > 0)
+            {
+                if (model.dependencies.entries[entry] != null)
+                {
+                    model.dependencies.entries.RemoveAt(entry);
+                }
+            }
         }
 
 
