@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿using System.Collections.Generic;
+using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
 using Control = PixelWizards.PackageUtil.PackageUtilController;
@@ -51,7 +52,9 @@ namespace PixelWizards.PackageUtil
         public static Vector2 outputScrollPosition = Vector2.zero;
         public static float windowWidth = 0f;
         public static float leftColumnWidth = 150f;
-        
+
+        private ReorderableList keywordList, dependenciesList;
+
         [MenuItem(Loc.MENUITEMPATH)]
         public static void ShowWindow()
         {
@@ -68,8 +71,29 @@ namespace PixelWizards.PackageUtil
         public void Reset()
         {
             Control.Init();
+
+            // create our reorderable lists
+            keywordList = new ReorderableList(Control.Model.keywords, typeof(List<string>), true, true, true, true);
+            dependenciesList = new ReorderableList(Control.Model.dependencies.entries, typeof(List<PackageDependency>), true, true, true, true);
+
+            // and all of the callbacks
+            keywordList.drawHeaderCallback += KeywordsHeader;
+            keywordList.drawElementCallback += KeywordsElement;
+            keywordList.onAddCallback += KeywordsAdd;
+            keywordList.onRemoveCallback += KeywordsRemove;
+
+            dependenciesList.drawHeaderCallback += DependenciesHeader;
+            dependenciesList.drawElementCallback += DependenciesElement;
+            dependenciesList.onAddCallback += DependenciesAdd;
+            dependenciesList.onRemoveCallback += DependenciesRemove;
+            dependenciesList.elementHeightCallback = (index) => {
+                Repaint();
+                // we want the dependencies list to be double height
+                var height = EditorGUIUtility.singleLineHeight * 2.5f;
+                return height;
+            };
         }
-        
+
         private void OnGUI()
         {
             windowWidth = position.width;
@@ -84,9 +108,13 @@ namespace PixelWizards.PackageUtil
 
                     DrawAuthorUI();
 
-                    DrawKeywordsUI();
+                    // do the keywords list
+                    keywordList.DoLayoutList();
+                    GUILayout.Space(10f);
 
-                    DrawDependenciesUI();
+                    // and dependencies list
+                    dependenciesList.DoLayoutList();
+                    GUILayout.Space(10f);
 
                     DrawPackagePathsUI();
 
@@ -160,124 +188,65 @@ namespace PixelWizards.PackageUtil
 
             GUILayout.Space(10f);
         }
-
-        /// <summary>
-        /// Keywords inspector
-        /// </summary>
-        private void DrawKeywordsUI()
+        
+        #region KeywordsReorderableList
+        private void KeywordsHeader(Rect rect)
         {
-            /*
-            *   KEYWORDS
-            */
-            GUILayout.Label(Loc.KEYWORDS, EditorStyles.boldLabel);
-            GUILayout.BeginVertical();
-            {
-                GUILayout.BeginHorizontal();
-                {
-                    GUILayout.Space(5f);
-                    GUILayout.BeginVertical(GUI.skin.box);
-                    {
-                        if (Control.Model.keywords.Count > 0)
-                        {
-                            for (var i = 0; i < Control.Model.keywords.Count; i++)
-                            {
-                                var keyword = Control.Model.keywords[i];
-                                RenderTextField(Loc.KEYWORD + " " + i, ref keyword);
-                                Control.Model.keywords[i] = keyword;
-                            }
-                        }
-                        else
-                        {
-                            GUILayout.Label("List is Empty");
-                        }
-                    }
-                    GUILayout.EndVertical();
-                }
-                GUILayout.EndHorizontal();
-                GUILayout.BeginHorizontal();
-                {
-                    GUILayout.Space(windowWidth - 65f);
-                    if (GUILayout.Button("+"))
-                    {
-                        Control.AddNewKeyword();
-                        // add
-                    }
-                    if (GUILayout.Button("-"))
-                    {
-                        Control.RemoveKeyword(Control.Model.keywords.Count - 1);
-                    }
-                }
-                GUILayout.EndHorizontal();
-            }
-            GUILayout.EndVertical();
-
-            GUILayout.Space(10f);
+            GUI.Label(rect, Loc.KEYWORDS);
         }
 
-        /// <summary>
-        /// Dependencies inspector
-        /// </summary>
-        private void DrawDependenciesUI()
+        private void KeywordsElement(Rect rect, int index, bool active, bool focused)
         {
-            /*
-            *   DEPENDENCIES
-            */
+            var entry = Control.Model.keywords[index];
 
-            GUILayout.Label(Loc.DEPENDENCIES, EditorStyles.boldLabel);
-            GUILayout.BeginVertical();
+            GUILayout.BeginHorizontal();
             {
-                GUILayout.BeginHorizontal();
-                {
-                    GUILayout.Space(5f);
-                    GUILayout.BeginVertical(GUI.skin.box);
-                    {
-                        if (Control.Model.dependencies.entries.Count > 0)
-                        {
-                            for (var i = 0; i < Control.Model.dependencies.entries.Count; i++)
-                            {
-                                var dependency = Control.Model.dependencies.entries[i];
-                                GUILayout.BeginHorizontal();
-                                {
-                                    GUILayout.Space(10f);
-                                    GUILayout.BeginVertical(GUI.skin.box);
-                                    {
-                                        RenderTextField(Loc.PACKAGE_NAME, ref dependency.name);
-                                        RenderTextField(Loc.PACKAGE_VERSION, ref dependency.version);
-                                    }
-                                    GUILayout.EndVertical();
-                                }
-                                GUILayout.EndHorizontal();
-
-                                Control.Model.dependencies.entries[i] = dependency;
-                            }
-                        }
-                        else
-                        {
-                            GUILayout.Label("List is Empty");
-                        }
-                    }
-                    GUILayout.EndVertical();
-                }
-                GUILayout.EndHorizontal();
-                GUILayout.BeginHorizontal();
-                {
-                    GUILayout.Space(windowWidth - 65f);
-                    if (GUILayout.Button("+"))
-                    {
-                        Control.AddNewDependency();
-                        // add
-                    }
-                    if (GUILayout.Button("-"))
-                    {
-                        Control.RemoveDependency(Control.Model.dependencies.entries.Count - 1);
-                    }
-                }
-                GUILayout.EndHorizontal();
+                entry = EditorGUI.TextField(new Rect(rect.x, rect.y, rect.width, rect.height), entry);
             }
-            GUILayout.EndVertical();
-
-            GUILayout.Space(10f);
+            GUILayout.EndHorizontal();
         }
+
+        private void KeywordsAdd(ReorderableList list)
+        {
+            Control.Model.keywords.Add(string.Empty);
+        }
+
+        private void KeywordsRemove(ReorderableList list)
+        {
+            Control.Model.keywords.RemoveAt(list.index);
+        }
+        #endregion
+        
+        #region DependenciesReorderableList
+        private void DependenciesHeader(Rect rect)
+        {
+            GUI.Label(rect, Loc.DEPENDENCIES);
+        }
+
+        private void DependenciesElement(Rect rect, int index, bool active, bool focused)
+        {
+            var entry = Control.Model.dependencies.entries[index];
+
+            var elementHeight = (float) (EditorGUIUtility.singleLineHeight * 2.5) / 2;
+
+            GUILayout.BeginHorizontal();
+            {
+                entry.name = EditorGUI.TextField(new Rect(rect.x, rect.y, rect.width, elementHeight - 5), new GUIContent(Loc.PACKAGE_NAME), entry.name);
+                entry.version = EditorGUI.TextField(new Rect(rect.x, rect.y + elementHeight, rect.width, elementHeight - 5), new GUIContent(Loc.PACKAGE_VERSION), entry.version);
+            }
+            GUILayout.EndHorizontal();
+        }
+
+        private void DependenciesAdd(ReorderableList list)
+        {
+            Control.Model.dependencies.entries.Add(new PackageDependency());
+        }
+
+        private void DependenciesRemove(ReorderableList list)
+        {
+            Control.Model.dependencies.entries.RemoveAt(list.index);
+        }
+        #endregion
 
         /// <summary>
         /// Package paths (source / destination)

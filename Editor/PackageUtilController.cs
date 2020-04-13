@@ -37,6 +37,7 @@ namespace PixelWizards.PackageUtil
     /// <summary>
     /// Json serializable package manifest
     /// </summary>
+    [System.Serializable]
     public class PackageUtilModel
     {
         public string name = "com.mycompany.mypackage";
