@@ -254,7 +254,7 @@ namespace PixelWizards.PackageUtil
         private void DrawPackagePathsUI()
         {
             /*
-            *   PACKAGAE PATHS
+            *   PACKAGE PATHS
             */
             GUILayout.Label(Loc.PACKAGE_PATHS, EditorStyles.boldLabel);
 
