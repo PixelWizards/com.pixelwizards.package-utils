@@ -1,7 +1,9 @@
 {
     "name": "com.pixelwizards.packageutil",
     "references": [],
-    "includePlatforms": [],
+    "includePlatforms": [
+        "Editor"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": true,
